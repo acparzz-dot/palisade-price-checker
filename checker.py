@@ -40,21 +40,22 @@ def main():
     prices = fetch_prices()
     if prices:
         message_lines = [
-            "🚗 **Акционные цены Palisade 2025**\n"
+            "🚗 <b>Акционные цены Palisade 2025</b>\n"
         ]
         for config, old_price, new_price in prices:
             config_clean = " ".join(config.split())
             message_lines.append(
-                f"▫️ *{config_clean}*\n"
-                f"   ~{old_price.strip()}~  ➡️  **{new_price.strip()}**\n"
+                f"▫️ <i>{config_clean}</i><br>"
+                f"&nbsp;&nbsp;<s>{old_price.strip()}</s> ➡️ <b>{new_price.strip()}</b><br>"
             )
         bot.send_message(
             CHAT_ID,
             "\n".join(message_lines),
-            parse_mode="Markdown"
+            parse_mode="HTML"
         )
     else:
         bot.send_message(CHAT_ID, "⚠ Акционные цены не найдены в прайс-листе.")
+
 
 if __name__ == "__main__":
     main()
