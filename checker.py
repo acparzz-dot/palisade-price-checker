@@ -17,20 +17,24 @@ def fetch_prices():
     with pdfplumber.open(io.BytesIO(r.content)) as pdf:
         text = "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
 
-    # Находим блок с "Акционная цена"
-    match = re.search(
-        r"Акционная\s+цена.*?(С бензиновым.*?)\n\n",
-        text,
-        re.DOTALL | re.IGNORECASE
+    # Найдём все блоки, которые начинаются с заголовка
+    pattern = re.compile(
+        r"(Акционная\s+цена\s+\(Автомобили\s+2025\s+г\.в\.\)\s+Luxe\s+Calligraphy\s+"
+        r"С бензиновым[^\n]+?₸[^\n]+₸)",
+        re.IGNORECASE
     )
-    if not match:
+
+    matches = pattern.findall(text)
+    if not matches:
         return None
 
-    block = match.group(1)
+    results = []
+    for match in matches:
+        # Внутри каждого блока найдём конфигурации с ценами
+        rows = re.findall(r"(С бензиновым[^\n]+?)\s+([\d\s]+₸)\s+([\d\s]+₸)", match)
+        results.extend(rows)
 
-    # Ищем строки с конфигурациями и ценами
-    rows = re.findall(r"(С бензиновым[^\n]+?)\s+([\d\s]+₸)\s+([\d\s]+₸)", block)
-    return rows
+    return results if results else None
 
 def main():
     prices = fetch_prices()
