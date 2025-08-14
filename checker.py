@@ -45,8 +45,8 @@ def main():
         for config, old_price, new_price in prices:
             config_clean = " ".join(config.split())
             message_lines.append(
-                f"▫️ <i>{config_clean}</i><br>"
-                f"&nbsp;&nbsp;<s>{old_price.strip()}</s> ➡️ <b>{new_price.strip()}</b><br>"
+                f"▫️ <i>{config_clean}</i>\n"
+                f"   <s>{old_price.strip()}</s> ➡️ <b>{new_price.strip()}</b>\n"
             )
         bot.send_message(
             CHAT_ID,
@@ -55,6 +55,7 @@ def main():
         )
     else:
         bot.send_message(CHAT_ID, "⚠ Акционные цены не найдены в прайс-листе.")
+
 
 
 if __name__ == "__main__":
