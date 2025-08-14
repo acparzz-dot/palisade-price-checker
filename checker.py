@@ -16,7 +16,7 @@ def fetch_price():
     r.raise_for_status()
     with pdfplumber.open(io.BytesIO(r.content)) as pdf:
         text = "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
-    match = re.search(r"Акционная цена \(Автомобили 2025 г\.в\.\)\s+([\d\s]+₸)", text)
+    match = re.search(r"Акционная\s+цена.*?([\d\s]+₸)", text, re.IGNORECASE | re.DOTALL)
     return match.group(1).strip() if match else None
 
 def main():
