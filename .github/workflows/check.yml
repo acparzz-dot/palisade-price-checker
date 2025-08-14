@@ -1,0 +1,27 @@
+name: Palisade Price Checker
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # каждый день в 9 утра по UTC
+  workflow_dispatch:
+
+jobs:
+  check_price:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests pdfplumber python-telegram-bot==13.15
+
+      - name: Run script
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python checker.py
