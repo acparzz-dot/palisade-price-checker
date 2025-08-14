@@ -2,7 +2,7 @@ name: Palisade Price Checker
 
 on:
   schedule:
-    - cron: "40 9 * * *" # каждый день в 9 утра по UTC
+    - cron: "36 8 * * *" # каждый день в 9 утра по UTC
   workflow_dispatch:
 
 jobs:
